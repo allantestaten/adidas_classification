@@ -7,7 +7,7 @@ import seaborn as sns
 from scipy import stats
 
 
-def table():
+def table(train):
     ''' This function will create a table of information '''
     #calculating median of property values 
     median = train.operating_margin.median() 
@@ -31,22 +31,14 @@ def table():
 
 #---------------VISUALS------------
 
-def barplot(dats,x,y,title):
+def barplot(data,x,y,title):
     '''this function will create a barplot'''
     # barplot of region and operating margin 
-    sns.barplot(data=train, x=x, y=y).set(title= "title")
-
+    sns.barplot(data=data, x=x, y=y).set(title= title)
 
 
 #----------STATISTICAL TESTS--------------------
 def anova_test(a,b,c,d,e):
-    '''this function will provide the results of the ANOVA test'''
-    # create dataframes of regions with their operating margin 
-    n_east = train[train.region == 'Northeast'].operating_margin
-    midwest = train[train.region == 'Midwest'].operating_margin
-    south = train[train.region == 'South'].operating_margin
-    west = train[train.region == 'West'].operating_margin
-    s_east= train[train.region == 'Southeast'].operating_margin 
 
     # statistical test /#pearsonr test 
     results, p = stats.kruskal(a,b,c,d,e)
@@ -55,16 +47,7 @@ def anova_test(a,b,c,d,e):
     print(f'Kruska Result = {results:.4f}')
     print(f'p = {p}')
 
-def anova_test_retailer(a,b,c,d,e,f):
-
-    # create dataframes of retailers with their operating margin 
-    sports_direct = train[train.retailer == 'Sports Direct'].operating_margin
-    walmart = train[train.retailer == 'Walmart'].operating_margin
-    foot_locker = train[train.retailer == 'Foot Locker'].operating_margin
-    amazon = train[train.retailer == 'Amazon'].operating_margin
-    west_gear= train[train.retailer == 'West Gear'].operating_margin
-    kohls= train[train['retailer'] == "Kohl's"].operating_margin
-
+def anova_test_six(a,b,c,d,e,f):
     """this function will run ANOVA test"""
     # statistical test 
     results, p = stats.kruskal(a,b,c,d,e,f)
@@ -72,10 +55,29 @@ def anova_test_retailer(a,b,c,d,e,f):
     print(f'Kruska Result = {results:.4f}')
     print(f'p = {p}')
 
-def anova_test_retailer(a,b,c):
+def anova_test_sales(train):
     """this function will run ANOVA test"""   
+    # create dataframes of sales-method with their operating margin 
+    in_store = train[train.sales_method == 'In-store'].operating_margin
+    online = train[train.sales_method == 'Online'].operating_margin
+    outlet = train[train.sales_method == 'Outlet'].operating_margin
     # statistical test 
-    results, p = stats.kruskal(a,b,c)
+    results, p = stats.kruskal(in_store,online,outlet)
+    # print results of statistical test 
+    print(f'Kruska Result = {results:.4f}')
+    print(f'p = {p}')
+
+def anova_test_products(train):
+    """this function will run ANOVA test"""
+    # create dataframes of products with their operating margin 
+    men_athletic_footwear = train[train['product'] == "Men's Athletic Footwear"].operating_margin
+    men_apparel = train[train['product'] == "Men's Apparel"].operating_margin
+    women_street_footwear = train[train['product'] == "Women's Street Footwear"].operating_margin
+    women_athletic_footwear = train[train['product'] == "Women's Athletic Footwear"].operating_margin
+    men_street_footwear= train[train['product'] == "Men's Street Footwear"].operating_margin
+    women_apparel= train[train['product'] == "Women's Apparel"].operating_margin
+    # statistical test 
+    results, p = stats.kruskal(men_athletic_footwear,men_apparel,women_street_footwear,women_athletic_footwear,men_street_footwear,women_apparel)
     # print results of statistical test 
     print(f'Kruska Result = {results:.4f}')
     print(f'p = {p}')
