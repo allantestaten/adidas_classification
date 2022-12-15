@@ -1,82 +1,166 @@
 import pandas as pd
-from tabulate import tabulate
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import seaborn as sns
-from scipy import stats
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier, plot_tree, export_text
+from sklearn.metrics import classification_report, confusion_matrix, plot_confusion_matrix
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.tree import DecisionTreeRegressor
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error
 
 
-def table():
-    ''' This function will create a table of information '''
-    #calculating median of property values 
-    median = train.operating_margin.median() 
+def baseline_model(y_train):
+    '''this function will create a baseline model'''
+    # Predict property_value_pred_mean (not used in project)
+    operating_margin_pred_mean = y_train['operating_margin'].mean()
+    y_train['operating_margin_pred_mean'] = operating_margin_pred_mean
 
-    #calculating mean of property values 
-    mean = train.operating_margin.mean()
+    # RMSE of prop_value_pred_mean
+    rmse_baseline_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_pred_mean)**(1/2)
+    print("RMSE using mean\nTrain/In-Sample: ", round(rmse_baseline_train, 4))
 
-    # difference between mean and median 
-    difference = mean - median
+    return rmse_baseline_train
 
-    #provides data for table
-    df = [["Median", median], 
-        ["Mean", mean],
-        ["Difference", difference]]
-        
-    #define header names
-    col_names = ["Metric", "Value"]
-  
-    #display table
-    print(tabulate(df, headers=col_names))   
+def linear_reg_model_train(X_train,y_train,rmse_baseline_train):
+    '''this function will create and provide the results of the linear regression model'''
+    # create the model object
+    lm2 = LinearRegression(normalize=True)
+    
+    # fit train data to model 
+    lm2.fit(X_train, y_train.operating_margin)
 
-#---------------VISUALS------------
+    # predict train
+    y_train['operating_margin_lm2'] = lm2.predict(X_train)
 
-def barplot(dats,x,y,title):
-    '''this function will create a barplot'''
-    # barplot of region and operating margin 
-    sns.barplot(data=train, x=x, y=y).set(title= "title")
+    # evaluate: rmse
+    rmse_polynomial_reg_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_lm2)**(1/2)
 
+    # print results of model
+    print("RMSE for Linear Regression Model,\nTraining/In-Sample: ", rmse_polynomial_reg_train)
+    
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_polynomial_reg_train)/(rmse_baseline_train)* 100))
 
+def tree_reg_model_train(X_train,y_train,rmse_baseline_train):
+    '''this function will create a decision tree regressor model and print results'''
 
-#----------STATISTICAL TESTS--------------------
-def anova_test(a,b,c,d,e):
-    '''this function will provide the results of the ANOVA test'''
-    # create dataframes of regions with their operating margin 
-    n_east = train[train.region == 'Northeast'].operating_margin
-    midwest = train[train.region == 'Midwest'].operating_margin
-    south = train[train.region == 'South'].operating_margin
-    west = train[train.region == 'West'].operating_margin
-    s_east= train[train.region == 'Southeast'].operating_margin 
+    # create a regressor object
+    reg = DecisionTreeRegressor(random_state = 100) 
 
-    # statistical test /#pearsonr test 
-    results, p = stats.kruskal(a,b,c,d,e)
+    # fit the regressor with X and Y data
+    reg.fit(X_train, y_train.operating_margin)
 
-    # print results of statistical test 
-    print(f'Kruska Result = {results:.4f}')
-    print(f'p = {p}')
+    # predict train
+    y_train['operating_margin_reg'] = reg.predict(X_train)
 
-def anova_test_retailer(a,b,c,d,e,f):
+    # evaluate: rmse
+    rmse_tree_reg_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_reg)**(1/2)
 
-    # create dataframes of retailers with their operating margin 
-    sports_direct = train[train.retailer == 'Sports Direct'].operating_margin
-    walmart = train[train.retailer == 'Walmart'].operating_margin
-    foot_locker = train[train.retailer == 'Foot Locker'].operating_margin
-    amazon = train[train.retailer == 'Amazon'].operating_margin
-    west_gear= train[train.retailer == 'West Gear'].operating_margin
-    kohls= train[train['retailer'] == "Kohl's"].operating_margin
+    # print results of model
+    print("RMSE for Decion Tree Regressor Model\nTraining/In-Sample: ", rmse_tree_reg_train)
+    
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tree_reg_train)/(rmse_baseline_train)* 100))
 
-    """this function will run ANOVA test"""
-    # statistical test 
-    results, p = stats.kruskal(a,b,c,d,e,f)
-    # print results of statistical test 
-    print(f'Kruska Result = {results:.4f}')
-    print(f'p = {p}')
+def tweedie_regressor_train(X_train,y_train,rmse_baseline_train):
+      # create the model object
+    glm = TweedieRegressor(power=1, alpha=0)
 
-def anova_test_retailer(a,b,c):
-    """this function will run ANOVA test"""   
-    # statistical test 
-    results, p = stats.kruskal(a,b,c)
-    # print results of statistical test 
-    print(f'Kruska Result = {results:.4f}')
-    print(f'p = {p}')
+    # fitting model to training data
+    glm.fit(X_train, y_train.operating_margin)
 
+    # computing predictions on x train dataset
+    y_train['operating_margin_pred_glm'] = glm.predict(X_train)
+
+    # evaluate: train rmse
+    rmse_tweedie_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_pred_glm)**(1/2)
+    
+    #printing results of model 
+    print("RMSE for GLM using Tweedie, power=1 & alpha=0\nTraining/In-Sample: ", rmse_tweedie_train)
+
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tweedie_train)/(rmse_baseline_train)* 100))
+
+def tree_reg_model_validate(X_train,y_train,X_validate,y_validate,rmse_baseline_train):
+    '''this function will create a tweedie regressor model and print results'''
+    # create a regressor object
+    reg = DecisionTreeRegressor(random_state = 100) 
+
+    # fit the regressor with X and Y data
+    reg.fit(X_train, y_train.operating_margin)
+    
+    # predict train
+    y_validate['operating_margin_reg_validate'] = reg.predict(X_validate)
+
+    # evaluate: rmse
+    rmse_tree_reg_validate = mean_squared_error(y_validate.operating_margin, y_validate.operating_margin_reg_validate)**(1/2)
+
+    # print results of model
+    print("RMSE for Tweedie Regressor Model\nValidate/Out-of-Sample: ", rmse_tree_reg_validate)
+    
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tree_reg_validate)/(rmse_baseline_train)* 100))
+
+def linear_reg_model_validate(X_train,y_train,X_validate,y_validate,rmse_baseline_train):
+    '''this function will create a linear regression model and print results'''
+
+    # create the model object
+    lm2 = LinearRegression(normalize=True)
+
+    # fit train data to model 
+    lm2.fit(X_train, y_train.operating_margin)
+
+    # predict train
+    y_validate['operating_margin_lm2'] = lm2.predict(X_validate)
+
+    # evaluate: rmse
+    rmse_linear_validate_reg_validate = mean_squared_error(y_validate.operating_margin, y_validate.operating_margin_lm2)**(1/2)
+
+    # print results of model
+    print("RMSE for Linear Regression Model,\nValidate/Out-of-Sample: ", rmse_linear_validate_reg_validate)
+    
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_linear_validate_reg_validate)/(rmse_baseline_train)* 100))
+
+def tweedie_model_validate(X_train,y_train,X_validate,y_validate,rmse_baseline_train):
+    '''this function will create a tweedie regressor model and print results'''
+    # create a regressor object
+    glm = TweedieRegressor(power=1, alpha=0)
+
+    # fit the regressor with X and Y data
+    glm.fit(X_train, y_train.operating_margin)
+    
+    # predict train
+    y_validate['operating_margin_pred_glm_validate'] = glm.predict(X_validate)
+
+    # evaluate: rmse
+    rmse_tweedie_validate = mean_squared_error(y_validate.operating_margin, y_validate.operating_margin_pred_glm_validate)**(1/2)
+
+    # print results of model
+    print("RMSE for Tweedie Regressor Model\nValidate/Out-of-Sample: ", rmse_tweedie_validate)
+    
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tweedie_validate)/(rmse_baseline_train)* 100))
+
+def test_model(X_train,y_train,X_test,y_test,rmse_baseline_train):
+    '''this function will create the test model and results'''
+    # create a regressor object
+    reg = DecisionTreeRegressor(random_state = 100) 
+
+    # fit the regressor with X and Y data
+    reg.fit(X_train, y_train.operating_margin)
+
+    # predict train
+    y_test['operating_margin_reg'] = reg.predict(X_test)
+
+    # evaluate: rmse
+    rmse_tree_reg_test = mean_squared_error(y_test.operating_margin, y_test.operating_margin_reg)**(1/2)
+
+    # print results of model
+    print("RMSE for Decion Tree Regressor Model\nTraining/In-Sample: ", rmse_tree_reg_test)
+    
+    #Improvement compared to baseline 
+    print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tree_reg_test)/(rmse_baseline_train)* 100))
