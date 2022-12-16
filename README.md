@@ -1,4 +1,4 @@
-# Predicting Operating Margin Retailers
+# Predicting Operating Margin for Retailers
  
 # Project Description
 Adidas United States Sales Team has asked me to provide a recommendation of how to grow sales in the United States market. 
