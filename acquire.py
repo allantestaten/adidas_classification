@@ -5,7 +5,7 @@ from env import get_db_url
 
 
 #------------------ACQUIRE DATA-------------------------------
-def get_split_data():
+def get_split_clean():
     '''this function will retrieve, clean and split the data'''
     # reading data into python from excel 
     df = pd.read_excel('Adidas_US_Sales_Datasets.xlsx')
@@ -23,6 +23,4 @@ def get_split_data():
     #replace spaces with underscore
     df.columns = [column.replace(' ','_').lower() for column in df]
     
-    # split data/ train, validate, test 
-    train_validate, test = train_test_split(df, test_size=.2, random_state=123)
-    train, validate = train_test_split(train_validate, test_size=.3, random_state=123) 
+    return df
