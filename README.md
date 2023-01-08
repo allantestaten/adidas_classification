@@ -9,6 +9,15 @@ Adidas United States Sales Team has asked me to provide a recommendation of how 
 * Deliver a report or presentation that can be understood by non-data scientists.
 * Deliver a report that explains what steps were taken and why they were taken.
 
+# Data Dictionary
+| Feature | Definition |
+|:--------|:-----------|
+|Retailer| Specific store: Amazon, Foot Locker, Kohl's, Sports Direct, Walmart, West Gear|
+|Region| Geographic Region in United States: Northeast, Midwest South, Southeast, West |
+|Product| Products sold by retailer: men and women's footwear and apparel|
+|Operating Margin| operating income/revenue|
+|Sales Method | The method of sale: In Store, Online and Outlet |
+
 # Executive Summary 
 * Mean operating margin is 42%
 * 3 Models were created, Best model performs 30% better than baseline model 
@@ -27,13 +36,12 @@ The retailer would be the most important driver of predicting operating margin
         * Invoice Date 
         * unnamed column
         * operating profit
-        * reetailer id 
+        * retailer id 
         * total sales 
         * price per unit 
     * Performed get dummies on region, retailer, product and sales method columns 
     * replaced spaces with underscores and made all words lower case
 
- 
 * Explore data in search of drivers of operating margin
    * Answer the following initial questions
        * What are the median and mean operating margin
@@ -51,16 +59,22 @@ The retailer would be the most important driver of predicting operating margin
    * Evaluate the best model on test data
  
 * Draw conclusions
- 
-# Data Dictionary
+   * Operating margin has a relationship with region,retailer,sale method and product 
+   * Women's apparel and men's street footwear appear to have the highest profit margins
+   * Online Sales appears to have the highest operating margin 
+   * The retailer with the highest operating margin is sports direct
+   * Walmart appears to be underperforming relative to its peers
+   * South region has the highest operating margin 
+   * Operating Margin has few outliers considering the difference median and mean are approximately 1% 
 
-| Feature | Definition |
-|:--------|:-----------|
-|Retailer| Specific store: Amazon, Foot Locker, Kohl's, Sports Direct, Walmart, West Gear|
-|Region| Geographic Region in United States: Northeast, Midwest South, Southeast, West |
-|Product| Products sold by retailer: men and women's footwear and apparel|
-|Operating Margin| operating income/revenue|
-|Sales Method | The method of sale: In Store, Online and Outlet |
+* Recommendations
+   * Provide Walmart less inventory and shift inventory to better performing retailer
+   * The sales department reach out to the retailer sports direct to find out if they are opening more locations
+
+* Next Steps
+   * Research if data supports decreasing the number of stores in certain cities or states based on how much of their operating margin comes from online sales  
+ 
+
 
 # Steps to Reproduce
 1) Clone this repo
@@ -69,18 +83,3 @@ The retailer would be the most important driver of predicting operating margin
 4) Put the data in the file containing the cloned repo
 4) Run notebook
  
-# Takeaways and Conclusions
-- Operating margin has a relationship with region,retailer,sale method and product 
-- Women's apparel and men's street footwear appear to have the highest profit margins
-- Online Sales appears to have the highest operating margin 
-- The retailer with the highest operating margin is sports direct
-- Walmart appears to be underperforming relative to its peers
-- South region has the highest operating margin 
-- Operating Margin has few outliers considering the difference median and mean are approximately 1% 
-
-# Recommendations
-* Provide Walmart less inventory and shift inventory to better performing retailer
-* The sales department reach out to the retailer sports direct to find out if they are opening more locations
-
-# Next Steps
-* Research if data supports decreasing the number of stores in certain cities or states based on how much of their operating margin comes from online sales  
