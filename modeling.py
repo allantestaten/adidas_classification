@@ -1,9 +1,5 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier, plot_tree, export_text
-from sklearn.metrics import classification_report, confusion_matrix, plot_confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
 from sklearn.preprocessing import PolynomialFeatures
@@ -20,7 +16,7 @@ def baseline_model(y_train):
 
     # RMSE of prop_value_pred_mean
     rmse_baseline_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_pred_mean)**(1/2)
-    print("RMSE using mean\nTrain/In-Sample: ", round(rmse_baseline_train, 4))
+    print("RMSE for Baseline Model using Mean\nTrain/In-Sample: ", round(rmse_baseline_train, 4))
 
     return rmse_baseline_train
 
@@ -39,7 +35,7 @@ def linear_reg_model_train(X_train,y_train,rmse_baseline_train):
     rmse_polynomial_reg_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_lm2)**(1/2)
 
     # print results of model
-    print("RMSE for Linear Regression Model,\nTraining/In-Sample: ", rmse_polynomial_reg_train)
+    print("RMSE for Linear Regression Model\nTraining/In-Sample: ", rmse_polynomial_reg_train)
     
     #Improvement compared to baseline 
     print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_polynomial_reg_train)/(rmse_baseline_train)* 100))
@@ -79,7 +75,7 @@ def tweedie_regressor_train(X_train,y_train,rmse_baseline_train):
     rmse_tweedie_train = mean_squared_error(y_train.operating_margin, y_train.operating_margin_pred_glm)**(1/2)
     
     #printing results of model 
-    print("RMSE for GLM using Tweedie, power=1 & alpha=0\nTraining/In-Sample: ", rmse_tweedie_train)
+    print("RMSE for Tweedie Regressor Model\nTraining/In-Sample: ", rmse_tweedie_train)
 
     #Improvement compared to baseline 
     print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tweedie_train)/(rmse_baseline_train)* 100))
@@ -120,7 +116,7 @@ def linear_reg_model_validate(X_train,y_train,X_validate,y_validate,rmse_baselin
     rmse_linear_validate_reg_validate = mean_squared_error(y_validate.operating_margin, y_validate.operating_margin_lm2)**(1/2)
 
     # print results of model
-    print("RMSE for Linear Regression Model,\nValidate/Out-of-Sample: ", rmse_linear_validate_reg_validate)
+    print("RMSE for Linear Regression Model\nValidate/Out-of-Sample: ", rmse_linear_validate_reg_validate)
     
     #Improvement compared to baseline 
     print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_linear_validate_reg_validate)/(rmse_baseline_train)* 100))
@@ -160,7 +156,7 @@ def test_model(X_train,y_train,X_test,y_test,rmse_baseline_train):
     rmse_tree_reg_test = mean_squared_error(y_test.operating_margin, y_test.operating_margin_reg)**(1/2)
 
     # print results of model
-    print("RMSE for Decion Tree Regressor Model\nTraining/In-Sample: ", rmse_tree_reg_test)
+    print("RMSE for Decion Tree Regressor Model\nTest/Out-of-Sample: ", rmse_tree_reg_test)
     
     #Improvement compared to baseline 
     print("Percent Improvement Compared to Baseline: ",((rmse_baseline_train-rmse_tree_reg_test)/(rmse_baseline_train)* 100))
