@@ -1,4 +1,4 @@
-Canva Presentation link : https://www.canva.com/design/DAFU3i4aU_8/Sgex7ArKQRwVw317IGoJmw/edit
+Canva Presentation link : https://www.canva.com/design/DAFU3i4aU_8/bs4Cl8iWVAQgkbjWv7d6NA/view?utm_content=DAFU3i4aU_8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
 
 # Predicting Operating Margin for Retailers
  
