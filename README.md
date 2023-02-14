@@ -50,7 +50,7 @@ The retailer would be the most important driver of predicting operating margin
 
 * Explore data in search of drivers of operating margin
    * Answer the following initial questions
-       * What are the median and mean operating margin
+       * What are the median and mean operating margin?
        * What is the mean home price?
        * Does region have a relationship with operating margin?
        * Does product have a relationship with operating margin?
