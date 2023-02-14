@@ -1,9 +1,8 @@
 ## Project Links
 * Click the buttons below to see the Project Repo and Canva presentation.  
-(https://www.canva.com/design/DAFZcPULMG4/ZNzwO2oXIp_OwowgUakIgw/view?utm_content=DAFZcPULMG4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
-[![Tableau Dashboard](https://img.shields.io/badge/Tableau%20Dashboard-%B4D5DECC.svg?style=for-the-badge&logo=Tableau&logoColor=white)](https://public.tableau.com/app/profile/allante.staten/viz/CiscoDashboard/Dashboard1)
 
-Canva Presentation link : https://www.canva.com/design/DAFU3i4aU_8/bs4Cl8iWVAQgkbjWv7d6NA/view?utm_content=DAFU3i4aU_8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink
+[![Canva](https://img.shields.io/badge/Canva%20Presentation-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white)]([https://www.canva.com/design/DAFZcPULMG4/ZNzwO2oXIp_OwowgUakIgw/view?utm_content=DAFZcPULMG4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink](https://www.canva.com/design/DAFU3i4aU_8/bs4Cl8iWVAQgkbjWv7d6NA/view?utm_content=DAFU3i4aU_8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink))
+[![Tableau Dashboard](https://img.shields.io/badge/Tableau%20Dashboard-%B4D5DECC.svg?style=for-the-badge&logo=Tableau&logoColor=white)](https://public.tableau.com/app/profile/allante.staten/viz/CiscoDashboard/Dashboard1)
 
 # Predicting Operating Margin for Retailers
  
